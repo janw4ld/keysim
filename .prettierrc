@@ -2,5 +2,9 @@
   "printWidth": 80,
   "editor.formatOnSave": true,
   "tabWidth": 2,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "singleQuote": false,
+  "trailingComma": "all",
+  "bracketSpacing": false,
+  "arrowParens": "avoid"
 }

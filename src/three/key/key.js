@@ -2,8 +2,8 @@ import * as THREE from "three";
 import KeyUtil from "../../util/keyboard";
 import ColorUtil from "../../util/color";
 import store from "../../store/store";
-import { subscribe } from "redux-subscriber";
-import { initial_settings } from "../../store/startup";
+import {subscribe} from "redux-subscriber";
+import {initial_settings} from "../../store/startup";
 import {
   keyMaterials,
   setKeyMaterialState,
@@ -11,7 +11,7 @@ import {
   updateMaterials,
   updateActiveMaterials,
 } from "./materials";
-import { keyGeometry, keyGeometryISOEnter } from "./geometry";
+import {keyGeometry, keyGeometryISOEnter} from "./geometry";
 
 export const KEYSTATES = {
   INITIAL: 0, // full height
@@ -37,7 +37,7 @@ export class Key {
     this.press_velocity = 0.1; // speed of press, smaller = smoother slower motion
     this.legend = currentState.keys.legendPrimaryStyle || "cherry";
     this.sub = currentState.keys.legendSecondaryStyle || "";
-    this.testing = initial_settings.settings.testing || false;
+    this.testing = initial_settings.settings.testing || true;
     this.setup();
   }
 
@@ -61,7 +61,7 @@ export class Key {
     setKeyMaterialState(
       this.cap,
       KEY_MATERIAL_STATES.DEFAULT,
-      this.is_iso_enter
+      this.is_iso_enter,
     );
 
     this.cap.castShadow = false;
@@ -71,21 +71,21 @@ export class Key {
     this.cap.position.z = this.y;
     this.options.container.add(this.cap);
 
-    subscribe("settings.testing", (state) => {
+    subscribe("settings.testing", state => {
       this.testing = state.settings.testing;
     });
 
-    subscribe("keys.legendSecondaryStyle", (state) => {
+    subscribe("keys.legendSecondaryStyle", state => {
       this.sub = state.keys.legendSecondaryStyle;
       this.updateColors();
     });
 
-    subscribe("keys.legendPrimaryStyle", (state) => {
+    subscribe("keys.legendPrimaryStyle", state => {
       this.legend = state.keys.legendPrimaryStyle;
       this.updateColors(false, true);
     });
 
-    subscribe("colorways.active", (state) => {
+    subscribe("colorways.active", state => {
       this.updateColors();
     });
 
@@ -226,7 +226,19 @@ export class Key {
       setKeyMaterialState(
         this.cap,
         KEY_MATERIAL_STATES.ACTIVE,
-        this.is_iso_enter
+        this.is_iso_enter,
+      );
+
+      new Promise(resolve =>
+        setTimeout(() => {
+          if (this.state !== KEYSTATES.PRESSED)
+            setKeyMaterialState(
+              this.cap,
+              KEY_MATERIAL_STATES.DEFAULT,
+              this.is_iso_enter,
+            );
+          resolve();
+        }, 100),
       );
     }
     // animate key up or down
