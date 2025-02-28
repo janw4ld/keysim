@@ -1,15 +1,15 @@
 import * as THREE from "three";
-import { subscribe } from "redux-subscriber";
-import { initial_settings } from "../../store/startup";
+import {subscribe} from "redux-subscriber";
+import {initial_settings} from "../../store/startup";
 import LAYOUTS from "../../config/layouts/layouts";
 import Util from "../../util/math";
 import case_1 from "./case_1";
 import case_2 from "./case_2";
 import badge from "./badge";
 import ColorUtil from "../../util/color";
-import { lightTexture } from "./lightTexture";
+import {lightTexture} from "./lightTexture";
 
-import { TextureLoader } from "three/src/loaders/TextureLoader.js";
+import {TextureLoader} from "three/src/loaders/TextureLoader.js";
 import shadowPath from "../../assets/dist/shadow-key-noise.png";
 import noisePath from "../../assets/dist/noise.png";
 import brushedRoughness from "../../assets/dist/brushed-metal_roughness-512.png";
@@ -120,23 +120,23 @@ export default class CaseManager {
     this.position();
     this.scene.add(this.group);
 
-    subscribe("case.primaryColor", (state) => {
+    subscribe("case.primaryColor", state => {
       this.color = state.case.primaryColor;
       this.updateCaseMaterial();
     });
 
-    subscribe("case.material", (state) => {
+    subscribe("case.material", state => {
       this.finish = state.case.material;
       this.updateCaseMaterial();
     });
 
-    subscribe("case.style", (state) => {
+    subscribe("case.style", state => {
       this.layout = LAYOUTS[state.case.layout];
       this.style = state.case.style;
       this.updateCaseGeometry();
     });
 
-    subscribe("case.layout", (state) => {
+    subscribe("case.layout", state => {
       this.layoutName = state.case.layout;
       this.layout = LAYOUTS[state.case.layout];
       this.updateCaseGeometry();
@@ -193,7 +193,7 @@ export default class CaseManager {
     if (this.plate) this.group.remove(this.plate);
     let geometry_plate = new THREE.PlaneGeometry(
       this.width - this.bezel * 2,
-      this.depth - this.bezel * 2
+      this.depth - this.bezel * 2,
     );
     let material_plate = new THREE.MeshLambertMaterial({
       color: "black",
@@ -205,7 +205,7 @@ export default class CaseManager {
     this.plate.position.set(
       this.width / 2 - this.bezel,
       -0.5,
-      this.depth / 2 - this.bezel
+      this.depth / 2 - this.bezel,
     );
     this.group.add(this.plate);
   }
@@ -236,14 +236,14 @@ export default class CaseManager {
     let sh_h = this.style === "CASE_1" ? 33 : 31.5;
     let sh_o = this.style === "CASE_1" ? 0 : -0.05;
     let shadowTex = this.loader.load(
-      shadow_paths[`shadow_path_${this.layoutName}`]
+      shadow_paths[`shadow_path_${this.layoutName}`],
     );
     let shadowMat = new THREE.MeshBasicMaterial({
       map: shadowTex,
     });
     this.shadow = new THREE.Mesh(
       new THREE.PlaneGeometry(sh_w, sh_h),
-      shadowMat
+      shadowMat,
     );
     this.shadow.position.z = this.depth / 2 - this.bezel + sh_o;
     this.shadow.position.y = 0.01;
@@ -295,8 +295,8 @@ export default class CaseManager {
         {
           color: color,
         },
-        options
-      )
+        options,
+      ),
     );
     //side material
     options.lightMap = this.lightTexture;
@@ -307,8 +307,8 @@ export default class CaseManager {
           aoMap: this.aoShadowTexture,
           aoMapIntensity: 0.6,
         },
-        options
-      )
+        options,
+      ),
     );
     materials.push(materialPrimary, materialSecondary);
     this.case.material = materials;

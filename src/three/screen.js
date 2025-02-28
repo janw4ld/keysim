@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import store from "../store/store";
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
-import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
+import {CSS3DObject} from "three/examples/jsm/renderers/CSS3DRenderer.js";
+import {RectAreaLightUniformsLib} from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
 
 export default class Screen {
   constructor(options) {
@@ -79,7 +79,7 @@ export default class Screen {
       baseWidth,
       baseHeight,
       baseWidth - sr,
-      baseHeight
+      baseHeight,
     );
     standShape.lineTo(armBack + sr, baseHeight);
     standShape.quadraticCurveTo(armBack, baseHeight, armBack, baseHeight + sr);
@@ -90,7 +90,7 @@ export default class Screen {
       armFront,
       baseHeight,
       armFront - sr,
-      baseHeight
+      baseHeight,
     );
     standShape.lineTo(sr, baseHeight);
     standShape.quadraticCurveTo(0, baseHeight, 0, baseHeight - sr);
@@ -106,7 +106,7 @@ export default class Screen {
     };
     let standGeometry = new THREE.ExtrudeGeometry(
       standShape,
-      standExtrudeOptions
+      standExtrudeOptions,
     );
     let stand = new THREE.Mesh(standGeometry, material);
     stand.rotation.y = Math.PI / 2;
@@ -145,11 +145,11 @@ export default class Screen {
     if (this.debug) {
       var lightMesh = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(),
-        new THREE.MeshBasicMaterial({ side: THREE.BackSide })
+        new THREE.MeshBasicMaterial({side: THREE.BackSide}),
       );
       var lightMeshBack = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(),
-        new THREE.MeshBasicMaterial({ color: "#080808" })
+        new THREE.MeshBasicMaterial({color: "#080808"}),
       );
       lightMesh.scale.x = this.glow.width;
       lightMesh.scale.y = this.glow.height;

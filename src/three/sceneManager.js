@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import Collection from "./collection";
-import { subscribe } from "redux-subscriber";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { enableHighlight, disableHighlight } from "./key/materials";
+import {subscribe} from "redux-subscriber";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
+import {enableHighlight, disableHighlight} from "./key/materials";
 import ThreeUtil from "../util/three";
 //import { CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
@@ -44,27 +44,27 @@ export default class SceneManager extends Collection {
     this.raycaster.layers.set(1);
 
     //bind global events
-    window.addEventListener("resize", (e) => this.resize(e), false);
-    this.el.addEventListener("mousemove", (e) => this.move(e), false);
-    this.el.addEventListener("click", (e) => this.mouseClick(e), false);
+    window.addEventListener("resize", e => this.resize(e), false);
+    this.el.addEventListener("mousemove", e => this.move(e), false);
+    this.el.addEventListener("click", e => this.mouseClick(e), false);
     this.el.addEventListener(
       "touchstart",
-      (e) => {
+      e => {
         this.move(e);
         this.mouseClick(e);
       },
-      false
+      false,
     );
     document.addEventListener(
       "screenshot",
       () => {
         this.takeScreenshot = true;
       },
-      false
+      false,
     );
 
     //some helpers for reading and setting orbit controls position / taking screenshots
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", e => {
       if (e.key === "F1") {
         console.log("Camera Position:");
         console.log(this.camera.position);
@@ -80,7 +80,7 @@ export default class SceneManager extends Collection {
       }
     });
 
-    subscribe("colorways.editing", (state) => {
+    subscribe("colorways.editing", state => {
       this.editing = state.colorways.editing;
     });
   }
@@ -91,8 +91,9 @@ export default class SceneManager extends Collection {
     return this.el.offsetHeight;
   }
   get sidebarWidth() {
-    let sb = document.getElementById("sidebar");
-    return sb ? sb.offsetWidth : 0;
+    return 0;
+    // let sb = document.getElementById("sidebar");
+    // return sb ? sb.offsetWidth : 0;
   }
   resize() {
     this.camera.aspect = this.w / this.h;
@@ -100,9 +101,9 @@ export default class SceneManager extends Collection {
     this.renderer.setSize(this.w, this.h);
   }
   setupCamera() {
-    this.camera = new THREE.PerspectiveCamera(60, this.w / this.h, 1, 1000);
-    this.camera.position.y = 15;
-    this.camera.position.z = 15;
+    this.camera = new THREE.PerspectiveCamera(30, this.w / this.h, 1, 1000);
+    this.camera.position.y = 20;
+    this.camera.position.z = 5;
     this.camera.position.x = 0;
   }
   setupControls() {
